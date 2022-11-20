@@ -1,8 +1,9 @@
-<link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'">
+<!-- <link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-menu-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-cart-notification.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'"> -->
+<!--
 {%- if settings.predictive_search_enabled -%}
   <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="{{ 'component-loading-overlay.css' | asset_url }}" media="print" onload="this.media='all'">
@@ -80,10 +81,10 @@
       padding-top: 0.5rem;
     }
   }
-</style>
+</style> -->
 
 {%- style -%}
-  .header {
+  /*.header {
     padding-top: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px;
   }
@@ -103,8 +104,10 @@
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
-  }
+  }*/
 {%- endstyle -%}
+
+
 
 <script src="{{ 'details-disclosure.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'details-modal.js' | asset_url }}" defer="defer"></script>
@@ -113,7 +116,7 @@
   <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
-<svg xmlns="http://www.w3.org/2000/svg" class="hidden">
+{%- comment -%} <svg xmlns="http://www.w3.org/2000/svg" class="hidden">
   <symbol id="icon-search" viewbox="0 0 18 19" fill="none">
     <path fill-rule="evenodd" clip-rule="evenodd" d="M11.03 11.68A5.784 5.784 0 112.85 3.5a5.784 5.784 0 018.18 8.18zm.26 1.12a6.78 6.78 0 11.72-.7l5.4 5.4a.5.5 0 11-.71.7l-5.41-5.4z" fill="currentColor"/>
   </symbol>
@@ -121,180 +124,463 @@
   <symbol id="icon-close" class="icon icon-close" fill="none" viewBox="0 0 18 17">
     <path d="M.865 15.978a.5.5 0 00.707.707l7.433-7.431 7.579 7.282a.501.501 0 00.846-.37.5.5 0 00-.153-.351L9.712 8.546l7.417-7.416a.5.5 0 10-.707-.708L8.991 7.853 1.413.573a.5.5 0 10-.693.72l7.563 7.268-7.418 7.417z" fill="currentColor">
   </symbol>
-</svg>
-<{% if section.settings.enable_sticky_header %}sticky-header{% else %}div{% endif %} class="header-wrapper color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}">
-  <header class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu != blank %} header--has-menu{% endif %}">
-    {%- if section.settings.menu != blank -%}
-      <header-drawer data-breakpoint="tablet">
-        <details id="Details-menu-drawer-container" class="menu-drawer-container">
-          <summary class="header__icon header__icon--menu header__icon--summary link focus-inset" aria-label="{{ 'sections.header.menu' | t }}">
-            <span>
-              {% render 'icon-hamburger' %}
-              {% render 'icon-close' %}
-            </span>
-          </summary>
-          <div id="menu-drawer" class="gradient menu-drawer motion-reduce" tabindex="-1">
-            <div class="menu-drawer__inner-container">
-              <div class="menu-drawer__navigation-container">
-                <nav class="menu-drawer__navigation">
-                  <ul class="menu-drawer__menu has-submenu list-menu" role="list">
-                    {%- for link in section.settings.menu.links -%}
-                      <li>
-                        {%- if link.links != blank -%}
-                          <details id="Details-menu-drawer-menu-item-{{ forloop.index }}">
-                            <summary class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if link.child_active %} menu-drawer__menu-item--active{% endif %}">
-                              {{ link.title | escape }}
-                              {% render 'icon-arrow' %}
-                              {% render 'icon-caret' %}
-                            </summary>
-                            <div id="link-{{ link.handle | escape }}" class="menu-drawer__submenu has-submenu gradient motion-reduce" tabindex="-1">
-                              <div class="menu-drawer__inner-submenu">
-                                <button class="menu-drawer__close-button link link--text focus-inset" aria-expanded="true">
-                                  {% render 'icon-arrow' %}
-                                  {{ link.title | escape }}
-                                </button>
-                                <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
-                                  {%- for childlink in link.links -%}
-                                    <li>
-                                      {%- if childlink.links == blank -%}
-                                        <a href="{{ childlink.url }}" class="menu-drawer__menu-item link link--text list-menu__item focus-inset{% if childlink.current %} menu-drawer__menu-item--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
-                                          {{ childlink.title | escape }}
-                                        </a>
-                                      {%- else -%}
-                                        <details id="Details-menu-drawer-submenu-{{ forloop.index }}">
-                                          <summary class="menu-drawer__menu-item link link--text list-menu__item focus-inset">
-                                            {{ childlink.title | escape }}
-                                            {% render 'icon-arrow' %}
-                                            {% render 'icon-caret' %}
-                                          </summary>
-                                          <div id="childlink-{{ childlink.handle | escape }}" class="menu-drawer__submenu has-submenu gradient motion-reduce">
-                                            <button class="menu-drawer__close-button link link--text focus-inset" aria-expanded="true">
-                                              {% render 'icon-arrow' %}
-                                              {{ childlink.title | escape }}
-                                            </button>
-                                            <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
-                                              {%- for grandchildlink in childlink.links -%}
-                                                <li>
-                                                  <a href="{{ grandchildlink.url }}" class="menu-drawer__menu-item link link--text list-menu__item focus-inset{% if grandchildlink.current %} menu-drawer__menu-item--active{% endif %}"{% if grandchildlink.current %} aria-current="page"{% endif %}>
-                                                    {{ grandchildlink.title | escape }}
-                                                  </a>
-                                                </li>
-                                              {%- endfor -%}
-                                            </ul>
-                                          </div>
-                                        </details>
-                                      {%- endif -%}
-                                    </li>
-                                  {%- endfor -%}
-                                </ul>
-                              </div>
-                            </div>
-                          </details>
-                        {%- else -%}
-                          <a href="{{ link.url }}" class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if link.current %} menu-drawer__menu-item--active{% endif %}"{% if link.current %} aria-current="page"{% endif %}>
-                            {{ link.title | escape }}
-                          </a>
-                        {%- endif -%}
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                </nav>
-                <div class="menu-drawer__utility-links">
-                  {%- if shop.customer_accounts_enabled -%}
-                    <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="menu-drawer__account link focus-inset h5">
-                      {% render 'icon-account' %}
-                      {%- liquid
-                        if customer
-                          echo 'customer.account_fallback' | t
-                        else
-                          echo 'customer.log_in' | t
-                        endif
-                      -%}
-                    </a>
-                  {%- endif -%}
-                  <ul class="list list-social list-unstyled" role="list">
-                    {%- if settings.social_twitter_link != blank -%}
-                      <li class="list-social__item">
-                        <a href="{{ settings.social_twitter_link }}" class="list-social__link link">
-                          {%- render 'icon-twitter' -%}
-                          <span class="visually-hidden">{{ 'general.social.links.twitter' | t }}</span>
-                        </a>
-                      </li>
-                    {%- endif -%}
-                    {%- if settings.social_facebook_link != blank -%}
-                      <li class="list-social__item">
-                        <a href="{{ settings.social_facebook_link }}" class="list-social__link link">
-                          {%- render 'icon-facebook' -%}
-                          <span class="visually-hidden">{{ 'general.social.links.facebook' | t }}</span>
-                        </a>
-                      </li>
-                    {%- endif -%}
-                    {%- if settings.social_pinterest_link != blank -%}
-                      <li class="list-social__item">
-                        <a href="{{ settings.social_pinterest_link }}" class="list-social__link link">
-                          {%- render 'icon-pinterest' -%}
-                          <span class="visually-hidden">{{ 'general.social.links.pinterest' | t }}</span>
-                        </a>
-                      </li>
-                    {%- endif -%}
-                    {%- if settings.social_instagram_link != blank -%}
-                      <li class="list-social__item">
-                        <a href="{{ settings.social_instagram_link }}" class="list-social__link link">
-                          {%- render 'icon-instagram' -%}
-                          <span class="visually-hidden">{{ 'general.social.links.instagram' | t }}</span>
-                        </a>
-                      </li>
-                    {%- endif -%}
-                    {%- if settings.social_tiktok_link != blank -%}
-                      <li class="list-social__item">
-                        <a href="{{ settings.social_tiktok_link }}" class="list-social__link link">
-                          {%- render 'icon-tiktok' -%}
-                          <span class="visually-hidden">{{ 'general.social.links.tiktok' | t }}</span>
-                        </a>
-                      </li>
-                    {%- endif -%}
-                    {%- if settings.social_tumblr_link != blank -%}
-                      <li class="list-social__item">
-                        <a href="{{ settings.social_tumblr_link }}" class="list-social__link link">
-                          {%- render 'icon-tumblr' -%}
-                          <span class="visually-hidden">{{ 'general.social.links.tumblr' | t }}</span>
-                        </a>
-                      </li>
-                    {%- endif -%}
-                    {%- if settings.social_snapchat_link != blank -%}
-                      <li class="list-social__item">
-                        <a href="{{ settings.social_snapchat_link }}" class="list-social__link link">
-                          {%- render 'icon-snapchat' -%}
-                          <span class="visually-hidden">{{ 'general.social.links.snapchat' | t }}</span>
-                        </a>
-                      </li>
-                    {%- endif -%}
-                    {%- if settings.social_youtube_link != blank -%}
-                      <li class="list-social__item">
-                        <a href="{{ settings.social_youtube_link }}" class="list-social__link link">
-                          {%- render 'icon-youtube' -%}
-                          <span class="visually-hidden">{{ 'general.social.links.youtube' | t }}</span>
-                        </a>
-                      </li>
-                    {%- endif -%}
-                    {%- if settings.social_vimeo_link != blank -%}
-                      <li class="list-social__item">
-                        <a href="{{ settings.social_vimeo_link }}" class="list-social__link link">
-                          {%- render 'icon-vimeo' -%}
-                          <span class="visually-hidden">{{ 'general.social.links.vimeo' | t }}</span>
-                        </a>
-                      </li>
-                    {%- endif -%}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </details>
-      </header-drawer>
-    {%- endif -%}
+</svg> {%- endcomment -%}
+<a href="#top" class="back-to-top" id="backto-top"><i class="fal fa-arrow-up"></i></a>
+<header class="header axil-header header-style-2 header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu != blank %} header--has-menu{% endif %}">
 
-    {%- if section.settings.logo_position == 'top-center' or section.settings.menu == blank -%}
+      
+      <a href="#top" class="back-to-top" id="backto-top"><i class="fal fa-arrow-up"></i></a>
+      {% comment %} <!-- Start Header --> {% endcomment %}
+      <header class="header axil-header header-style-2">
+          <div class="header-top-campaign">
+              <div class="container position-relative">
+                  <div class="campaign-content">
+                      <div class="campaign-countdown"></div>
+                      <p>Open Doors To A World Of Fashion Get <a href="#">Get Your Offer</a></p>
+                  </div>
+              </div>
+              <button class="remove-campaign"><i class="fal fa-times"></i></button>
+          </div>
+          {% comment %} <!-- Start Header Top Area  --> {% endcomment %}
+          <div class="axil-header-top">
+              <div class="container">
+                  <div class="row align-items-center">
+                      <div class="col-lg-2 col-sm-3 col-5">
+                          <div class="header-brand">
+                            {%- if section.settings.logo_position != 'middle-center' -%}
+                              {%- if request.page_type == 'index' -%}
+                                <h1 class="header__heading">
+                              {%- endif -%}
+                                  <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
+                                    {%- if section.settings.logo != blank -%}
+                                      {%- assign logo_alt = section.settings.logo.alt | default: shop.name | escape -%}
+                                      {%- assign logo_height = section.settings.logo_width | divided_by: section.settings.logo.aspect_ratio -%}
+                                      {{ section.settings.logo | image_url: width: section.settings.width | image_tag:
+                                        class: 'header__heading-logo',
+                                        widths: '50, 100, 150, 200, 250, 300, 400, 500',
+                                        height: logo_height,
+                                        width: section.settings.logo_width,
+                                        alt: logo_alt
+                                      }}
+                                    {%- else -%}
+                                      <span class="h2"> <img src="./assets/logo.png" alt="Department"> </span>
+                                    {%- endif -%}
+                                  </a>
+                              {%- if request.page_type == 'index' -%}
+                                </h1>
+                              {%- endif -%}
+                            {%- endif -%}
+                          </div>
+                      </div>
+                      <div class="col-lg-10 col-sm-9 col-7">
+                          <div class="header-top-dropdown dropdown-box-style">
+                              <div class="axil-search">
+                                  <button type="submit" class="icon wooc-btn-search">
+                                      <i class="far fa-search"></i>
+                                  </button>
+                                  <input type="search" class="placeholder product-search-input" name="search2" id="search2" value="" maxlength="128" placeholder="What are you looking for...." autocomplete="off">
+                              </div>
+                              <div class="dropdown">
+                                  <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                      USD
+                                  </button>
+                                  <ul class="dropdown-menu">
+                                      <li><a class="dropdown-item" href="#">USD</a></li>
+                                      <li><a class="dropdown-item" href="#">AUD</a></li>
+                                      <li><a class="dropdown-item" href="#">EUR</a></li>
+                                  </ul>
+                              </div>
+                              <div class="dropdown">
+                                  <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                      EN
+                                  </button>
+                                  <ul class="dropdown-menu">
+                                      <li><a class="dropdown-item" href="#">EN</a></li>
+                                      <li><a class="dropdown-item" href="#">ARB</a></li>
+                                      <li><a class="dropdown-item" href="#">SPN</a></li>
+                                  </ul>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          {% comment %} <!-- End Header Top Area  --> {% endcomment %}
+  
+          {% comment %} <!-- Start Mainmenu Area  --> {% endcomment %}
+          <div class="axil-mainmenu aside-category-menu">
+              <div class="container">
+                  <div class="header-navbar">
+                      <div class="header-nav-department">
+                          <aside class="header-department">
+                              <button class="header-department-text department-title">
+                                  <span class="icon"><i class="fal fa-bars"></i></span>
+                                  <span class="text">Categories</span>
+                              </button>
+                              <nav class="department-nav-menu">
+                                  <button class="sidebar-close"><i class="fas fa-times"></i></button>
+                                  <ul class="nav-menu-list">
+                                      <li>
+                                          <a href="#" class="nav-link has-megamenu">
+                                              <span class="menu-icon"><img src="./assets/cat-01.png" alt="Department"></span>
+                                              <span class="menu-text">Fashion</span>
+                                          </a>
+                                          <div class="department-megamenu">
+                                              <div class="department-megamenu-wrap">
+                                                  <div class="department-submenu-wrap">
+                                                      <div class="department-submenu">
+                                                          <h3 class="submenu-heading">Men</h3>
+                                                          <ul>
+                                                              <li><a href="shop.html">T-shirts</a></li>
+                                                              <li><a href="shop-sidebar.html">Shirts</a></li>
+                                                              <li><a href="shop.html">Jeans</a></li>
+                                                          </ul>
+                                                          <h3 class="submenu-heading">Baby</h3>
+                                                          <ul>
+                                                              <li><a href="shop.html">Baby Cloths</a></li>
+                                                              <li><a href="shop-sidebar.html">Baby Gear</a></li>
+                                                              <li><a href="shop.html">Baby Toddler</a></li>
+                                                              <li><a href="shop-sidebar.html">Baby Toys</a></li>
+                                                          </ul>
+                                                      </div>
+                                                      <div class="department-submenu">
+                                                          <h3 class="submenu-heading">Women</h3>
+                                                          <ul>
+                                                              <li><a href="shop.html">Jeans</a></li>
+                                                              <li><a href="shop-sidebar.html">T-shirts</a></li>
+                                                              <li><a href="shop.html">Shirts</a></li>
+                                                              <li><a href="shop.html">Tops</a></li>
+                                                              <li><a href="shop-sidebar.html">Jumpsuits</a></li>
+                                                              <li><a href="shop.html">Coats</a></li>
+                                                              <li><a href="shop-sidebar.html">Sweater</a></li>
+                                                          </ul>
+                                                      </div>
+                                                      <div class="department-submenu">
+                                                          <h3 class="submenu-heading">Accessories</h3>
+                                                          <ul>
+                                                              <li><a href="shop.html">Handbag</a></li>
+                                                              <li><a href="shop.html">Shoes</a></li>
+                                                              <li><a href="shop.html">Wallets</a></li>
+                                                          </ul>
+                                                      </div>
+                                                  </div>
+                                                  <div class="featured-product">
+                                                      <h3 class="featured-heading">Featured</h3>
+                                                      <div class="product-list">
+                                                          <div class="item-product">
+                                                              <a href="#"><img src="./assets/images/product/product-feature1.png" alt="Featured Product"></a>
+                                                          </div>
+                                                          <div class="item-product">
+                                                              <a href="#"><img src="./assets/images/product/product-feature2.png" alt="Featured Product"></a>
+                                                          </div>
+                                                          <div class="item-product">
+                                                              <a href="#"><img src="./assets/images/product/product-feature3.png" alt="Featured Product"></a>
+                                                          </div>
+                                                          <div class="item-product">
+                                                              <a href="#"><img src="./assets/images/product/product-feature4.png" alt="Featured Product"></a>
+                                                          </div>
+                                                      </div>
+                                                      <a href="#" class="axil-btn btn-bg-primary">See All Offers</a>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </li>
+                                      <li>
+                                          <a href="#" class="nav-link has-megamenu">
+                                              <span class="menu-icon"><img src="./assets/cat-02.png" alt="Department"></span>
+                                              <span class="menu-text">Electronics</span>
+                                          </a>
+                                          <div class="department-megamenu">
+                                              <div class="department-megamenu-wrap">
+                                                  <div class="department-submenu-wrap">
+                                                      <div class="department-submenu">
+                                                          <h3 class="submenu-heading">Men</h3>
+                                                          <ul>
+                                                              <li><a href="shop.html">T-shirts</a></li>
+                                                              <li><a href="shop-sidebar.html">Shirts</a></li>
+                                                              <li><a href="shop.html">Jeans</a></li>
+                                                          </ul>
+                                                          <h3 class="submenu-heading">Baby</h3>
+                                                          <ul>
+                                                              <li><a href="shop.html">Baby Cloths</a></li>
+                                                              <li><a href="shop-sidebar.html">Baby Gear</a></li>
+                                                              <li><a href="shop.html">Baby Toddler</a></li>
+                                                              <li><a href="shop-sidebar.html">Baby Toys</a></li>
+                                                          </ul>
+                                                      </div>
+                                                      <div class="department-submenu">
+                                                          <h3 class="submenu-heading">Women</h3>
+                                                          <ul>
+                                                              <li><a href="shop.html">Jeans</a></li>
+                                                              <li><a href="shop-sidebar.html">T-shirts</a></li>
+                                                              <li><a href="shop.html">Shirts</a></li>
+                                                              <li><a href="shop.html">Tops</a></li>
+                                                              <li><a href="shop-sidebar.html">Jumpsuits</a></li>
+                                                              <li><a href="shop.html">Coats</a></li>
+                                                              <li><a href="shop-sidebar.html">Sweater</a></li>
+                                                          </ul>
+                                                      </div>
+                                                      <div class="department-submenu">
+                                                          <h3 class="submenu-heading">Accessories</h3>
+                                                          <ul>
+                                                              <li><a href="shop.html">Handbag</a></li>
+                                                              <li><a href="shop.html">Shoes</a></li>
+                                                              <li><a href="shop.html">Wallets</a></li>
+                                                          </ul>
+                                                      </div>
+                                                  </div>
+                                                  <div class="featured-product">
+                                                      <h3 class="featured-heading">Featured</h3>
+                                                      <div class="product-list">
+                                                          <div class="item-product">
+                                                              <a href="#"><img src="./assets/images/product/product-feature1.png" alt="Featured Product"></a>
+                                                          </div>
+                                                          <div class="item-product">
+                                                              <a href="#"><img src="./assets/images/product/product-feature2.png" alt="Featured Product"></a>
+                                                          </div>
+                                                          <div class="item-product">
+                                                              <a href="#"><img src="./assets/images/product/product-feature3.png" alt="Featured Product"></a>
+                                                          </div>
+                                                          <div class="item-product">
+                                                              <a href="#"><img src="./assets/images/product/product-feature4.png" alt="Featured Product"></a>
+                                                          </div>
+                                                      </div>
+                                                      <a href="#" class="axil-btn btn-bg-primary">See All Offers</a>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </li>
+                                      <li>
+                                          <a href="#" class="nav-link has-megamenu">
+                                              <span class="menu-icon"><img src="./assets/cat-03.png" alt="Department"></span>
+                                              <span class="menu-text">Home Decor</span>
+                                          </a>
+                                          <div class="department-megamenu">
+                                              <div class="department-megamenu-wrap">
+                                                  <div class="department-submenu-wrap">
+                                                      <div class="department-submenu">
+                                                          <h3 class="submenu-heading">Men</h3>
+                                                          <ul>
+                                                              <li><a href="shop.html">T-shirts</a></li>
+                                                              <li><a href="shop-sidebar.html">Shirts</a></li>
+                                                              <li><a href="shop.html">Jeans</a></li>
+                                                          </ul>
+                                                          <h3 class="submenu-heading">Baby</h3>
+                                                          <ul>
+                                                              <li><a href="shop.html">Baby Cloths</a></li>
+                                                              <li><a href="shop-sidebar.html">Baby Gear</a></li>
+                                                              <li><a href="shop.html">Baby Toddler</a></li>
+                                                              <li><a href="shop-sidebar.html">Baby Toys</a></li>
+                                                          </ul>
+                                                      </div>
+                                                      <div class="department-submenu">
+                                                          <h3 class="submenu-heading">Women</h3>
+                                                          <ul>
+                                                              <li><a href="shop.html">Jeans</a></li>
+                                                              <li><a href="shop-sidebar.html">T-shirts</a></li>
+                                                              <li><a href="shop.html">Shirts</a></li>
+                                                              <li><a href="shop.html">Tops</a></li>
+                                                              <li><a href="shop-sidebar.html">Jumpsuits</a></li>
+                                                              <li><a href="shop.html">Coats</a></li>
+                                                              <li><a href="shop-sidebar.html">Sweater</a></li>
+                                                          </ul>
+                                                      </div>
+                                                      <div class="department-submenu">
+                                                          <h3 class="submenu-heading">Accessories</h3>
+                                                          <ul>
+                                                              <li><a href="shop.html">Handbag</a></li>
+                                                              <li><a href="shop.html">Shoes</a></li>
+                                                              <li><a href="shop.html">Wallets</a></li>
+                                                          </ul>
+                                                      </div>
+                                                  </div>
+                                                  <div class="featured-product">
+                                                      <h3 class="featured-heading">Featured</h3>
+                                                      <div class="product-list">
+                                                          <div class="item-product">
+                                                              <a href="#"><img src="./assets/images/product/product-feature1.png" alt="Featured Product"></a>
+                                                          </div>
+                                                          <div class="item-product">
+                                                              <a href="#"><img src="./assets/images/product/product-feature2.png" alt="Featured Product"></a>
+                                                          </div>
+                                                          <div class="item-product">
+                                                              <a href="#"><img src="./assets/images/product/product-feature3.png" alt="Featured Product"></a>
+                                                          </div>
+                                                          <div class="item-product">
+                                                              <a href="#"><img src="./assets/images/product/product-feature4.png" alt="Featured Product"></a>
+                                                          </div>
+                                                      </div>
+                                                      <a href="#" class="axil-btn btn-bg-primary">See All Offers</a>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </li>
+                                      <li>
+                                          <a href="#" class="nav-link">
+                                              <span class="menu-icon"><img src="./assets/cat-04.png" alt="Department"></span>
+                                              <span class="menu-text">Medicine</span>
+                                          </a>
+                                      </li>
+                                      <li>
+                                          <a href="#" class="nav-link">
+                                              <span class="menu-icon"><img src="./assets/cat-05.png" alt="Department"></span>
+                                              <span class="menu-text">Furniture</span>
+                                          </a>
+                                      </li>
+                                      <li>
+                                          <a href="#" class="nav-link">
+                                              <span class="menu-icon"><img src="./assets/cat-06.png" alt="Department"></span>
+                                              <span class="menu-text">Crafts</span>
+                                          </a>
+                                      </li>
+                                      <li>
+                                          <a href="#" class="nav-link">
+                                              <span class="menu-icon"><img src="./assets/cat-07.png" alt="Department"></span>
+                                              <span class="menu-text">Accessories</span>
+                                          </a>
+                                      </li>
+                                      <li>
+                                          <a href="#" class="nav-link">
+                                              <span class="menu-icon"><img src="./assets/cat-08.png" alt="Department"></span>
+                                              <span class="menu-text">Camera</span>
+                                          </a>
+                                      </li>
+  
+                                  </ul>
+                              </nav>
+                          </aside>
+                      </div>
+                      <div class="header-main-nav">
+                          {% comment %} <!-- Start Mainmanu Nav --> {% endcomment %}
+                          <nav class="mainmenu-nav">
+                              <button class="mobile-close-btn mobile-nav-toggler"><i class="fas fa-times"></i></button>
+                              <div class="mobile-nav-brand">
+                                  <a href="index.html" class="logo">
+                                      <img src="assets/images/logo/logo.png" alt="Site Logo">
+                                  </a>
+                              </div>
+                              <ul class="mainmenu">
+                                  <li class="menu-item-has-children">
+                                      <a href="#">Home</a>
+                                      <ul class="axil-submenu">
+                                          <li><a href="index-1.html">Home - Electronics</a></li>
+                                          <li><a href="index-2.html">Home - NFT</a></li>
+                                          <li><a href="index-3.html">Home - Fashion</a></li>
+                                          <li><a href="index-4.html">Home - Jewellery</a></li>
+                                          <li><a href="index-5.html">Home - Furniture</a></li>
+                                          <li><a href="index-6.html">Home - Multipurpose</a></li>
+                                      </ul>
+                                  </li>
+                                  <li class="menu-item-has-children">
+                                      <a href="#">Shop</a>
+                                      <ul class="axil-submenu">
+                                          <li><a href="shop-sidebar.html">Shop With Sidebar</a></li>
+                                          <li><a href="shop.html">Shop no Sidebar</a></li>
+                                          <li><a href="single-product.html">Product Variation 1</a></li>
+                                          <li><a href="single-product-2.html">Product Variation 2</a></li>
+                                          <li><a href="single-product-3.html">Product Variation 3</a></li>
+                                          <li><a href="single-product-4.html">Product Variation 4</a></li>
+                                          <li><a href="single-product-5.html">Product Variation 5</a></li>
+                                          <li><a href="single-product-6.html">Product Variation 6</a></li>
+                                          <li><a href="single-product-7.html">Product Variation 7</a></li>
+                                      </ul>
+                                  </li>
+                                  <li class="menu-item-has-children">
+                                      <a href="#">Pages</a>
+                                      <ul class="axil-submenu">
+                                          <li><a href="wishlist.html">Wishlist</a></li>
+                                          <li><a href="cart.html">Cart</a></li>
+                                          <li><a href="checkout.html">Checkout</a></li>
+                                          <li><a href="my-account.html">Account</a></li>
+                                          <li><a href="sign-up.html">Sign Up</a></li>
+                                          <li><a href="sign-in.html">Sign In</a></li>
+                                          <li><a href="forgot-password.html">Forgot Password</a></li>
+                                          <li><a href="reset-password.html">Reset Password</a></li>
+                                          <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                                          <li><a href="coming-soon.html">Coming Soon</a></li>
+                                          <li><a href="404.html">404 Error</a></li>
+                                          <li><a href="typography.html">Typography</a></li>
+                                      </ul>
+                                  </li>
+                                  <li><a href="about-us.html">About</a></li>
+                                  <li class="menu-item-has-children">
+                                      <a href="#">Blog</a>
+                                      <ul class="axil-submenu">
+                                          <li><a href="blog.html">Blog List</a></li>
+                                          <li><a href="blog-grid.html">Blog Grid</a></li>
+                                          <li><a href="blog-details.html">Standard Post</a></li>
+                                          <li><a href="blog-gallery.html">Gallery Post</a></li>
+                                          <li><a href="blog-video.html">Video Post</a></li>
+                                          <li><a href="blog-audio.html">Audio Post</a></li>
+                                          <li><a href="blog-quote.html">Quote Post</a></li>
+                                      </ul>
+                                  </li>
+                                  <li><a href="contact.html">Contact</a></li>
+                              </ul>
+                          </nav>
+                          {% comment %} <!-- End Mainmanu Nav --> {% endcomment %}
+                      </div>
+                      <div class="header-action">
+                          <ul class="action-list">
+                              <li class="axil-search d-sm-none d-block">
+                                  <a href="javascript:void(0)" class="header-search-icon" title="Search">
+                                      <i class="flaticon-magnifying-glass"></i>
+                                  </a>
+                              </li>
+                              <li class="wishlist">
+                                  <a href="wishlist.html">
+                                      <i class="flaticon-heart"></i>
+                                  </a>
+                              </li>
+                              <li class="shopping-cart">
+                                  <a href="#" class="cart-dropdown-btn">
+                                      <span class="cart-count">3</span>
+                                      <i class="flaticon-shopping-cart"></i>
+                                  </a>
+                              </li>
+                              <li class="my-account">
+                                  <a href="javascript:void(0)">
+                                      <i class="flaticon-person"></i>
+                                  </a>
+                                  <div class="my-account-dropdown">
+                                      <span class="title">QUICKLINKS</span>
+                                      <ul>
+                                          <li>
+                                              <a href="my-account.html">My Account</a>
+                                          </li>
+                                          <li>
+                                              <a href="#">Initiate return</a>
+                                          </li>
+                                          <li>
+                                              <a href="#">Support</a>
+                                          </li>
+                                          <li>
+                                              <a href="#">Language</a>
+                                          </li>
+                                      </ul>
+                                      <div class="login-btn">
+                                          <a href="sign-in.html" class="axil-btn btn-bg-primary">Login</a>
+                                      </div>
+                                      <div class="reg-footer text-center">No account yet? <a href="sign-up.html" class="btn-link">REGISTER HERE.</a></div>
+                                  </div>
+                              </li>
+                              <li class="axil-mobile-toggle">
+                                  <button class="menu-btn mobile-nav-toggler">
+                                      <i class="flaticon-menu-2"></i>
+                                  </button>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          {% comment %} <!-- End Mainmenu Area  --> {% endcomment %}
+      </header>
+        {% comment %} <!-- End Mainmenu Area --> {% endcomment %}
+    </header>
+    {% comment %} {%- endif -%} {% endcomment %}
+
+    {%- comment -%} {%- if section.settings.logo_position == 'top-center' or section.settings.menu == blank -%}
       <details-modal class="header__search">
         <details>
           <summary class="header__icon header__icon--search header__icon--summary link focus-inset modal__toggle" aria-haspopup="dialog" aria-label="{{ 'general.search.search' | t }}">
@@ -367,9 +653,9 @@
           </div>
         </details>
       </details-modal>
-    {%- endif -%}
+    {%- endif -%} {%- endcomment -%}
 
-    {%- if section.settings.logo_position != 'middle-center' -%}
+    {%- comment -%} {%- if section.settings.logo_position != 'middle-center' -%}
       {%- if request.page_type == 'index' -%}
         <h1 class="header__heading">
       {%- endif -%}
@@ -391,9 +677,9 @@
       {%- if request.page_type == 'index' -%}
         </h1>
       {%- endif -%}
-    {%- endif -%}
+    {%- endif -%} {%- endcomment -%}
 
-    {% comment %} {%- if section.settings.menu != blank -%}
+    {%- comment -%} {%- if section.settings.menu != blank -%}
       {%- if section.settings.menu_type_desktop == 'dropdown' -%}
         <nav class="header__inline-menu">
           <ul class="list-menu list-menu--inline" role="list">
@@ -490,9 +776,9 @@
           </ul>
         </nav>
       {%- endif -%}
-    {%- endif -%} {% endcomment %}
+    {%- endif -%} {%- endcomment -%}
 
-    {%- if section.settings.logo_position == 'middle-center' -%}
+    {%- comment -%} {%- if section.settings.logo_position == 'middle-center' -%}
       {%- if request.page_type == 'index' -%}
         <h1 class="header__heading">
       {%- endif -%}
@@ -514,56 +800,56 @@
       {%- if request.page_type == 'index' -%}
         </h1>
       {%- endif -%}
-    {%- endif -%}
+    {%- endif -%} {%- endcomment -%}
 
-    <div class="header__icons">
-      <details-modal class="header__search">
-        <details>
-          <summary class="header__icon header__icon--search header__icon--summary link focus-inset modal__toggle" aria-haspopup="dialog" aria-label="{{ 'general.search.search' | t }}">
-            <span>
-              <svg class="modal__toggle-open icon icon-search" aria-hidden="true" focusable="false" role="presentation">
-                <use href="#icon-search">
-              </svg>
-              <svg class="modal__toggle-close icon icon-close" aria-hidden="true" focusable="false" role="presentation">
-                <use href="#icon-close">
-              </svg>
-            </span>
-          </summary>
-          <div class="search-modal modal__content gradient" role="dialog" aria-modal="true" aria-label="{{ 'general.search.search' | t }}">
-            <div class="modal-overlay"></div>
-            <div class="search-modal__content{% if settings.inputs_shadow_vertical_offset != 0 and settings.inputs_shadow_vertical_offset < 0 %} search-modal__content-top{% else %} search-modal__content-bottom{% endif %}" tabindex="-1">
-              {%- if settings.predictive_search_enabled -%}
-                <predictive-search class="search-modal__form" data-loading-text="{{ 'accessibility.loading' | t }}">
-              {%- endif -%}
-                <form action="{{ routes.search_url }}" method="get" role="search" class="search search-modal__form">
-                  <div class="field">
-                    <input class="search__input field__input"
-                      id="Search-In-Modal"
-                      type="search"
-                      name="q"
-                      value=""
-                      placeholder="{{ 'general.search.search' | t }}"
-                      {%- if settings.predictive_search_enabled -%}
-                        role="combobox"
-                        aria-expanded="false"
-                        aria-owns="predictive-search-results-list"
-                        aria-controls="predictive-search-results-list"
-                        aria-haspopup="listbox"
-                        aria-autocomplete="list"
-                        autocorrect="off"
-                        autocomplete="off"
-                        autocapitalize="off"
-                        spellcheck="false"
-                      {%- endif -%}
-                    >
-                    <label class="field__label" for="Search-In-Modal">{{ 'general.search.search' | t }}</label>
-                    <input type="hidden" name="options[prefix]" value="last">
-                    <button class="search__button field__button" aria-label="{{ 'general.search.search' | t }}">
-                      <svg class="icon icon-search" aria-hidden="true" focusable="false" role="presentation">
-                        <use href="#icon-search">
-                      </svg>
-                    </button>
-                  </div>
+      {%- comment -%} <div class="header__icons">
+        <details-modal class="header__search">
+          <details>
+            <summary class="header__icon header__icon--search header__icon--summary link focus-inset modal__toggle" aria-haspopup="dialog" aria-label="{{ 'general.search.search' | t }}">
+              <span>
+                <svg class="modal__toggle-open icon icon-search" aria-hidden="true" focusable="false" role="presentation">
+                  <use href="#icon-search">
+                </svg>
+                <svg class="modal__toggle-close icon icon-close" aria-hidden="true" focusable="false" role="presentation">
+                  <use href="#icon-close">
+                </svg>
+              </span>
+            </summary>
+            <div class="search-modal modal__content gradient" role="dialog" aria-modal="true" aria-label="{{ 'general.search.search' | t }}">
+              <div class="modal-overlay"></div>
+              <div class="search-modal__content{% if settings.inputs_shadow_vertical_offset != 0 and settings.inputs_shadow_vertical_offset < 0 %} search-modal__content-top{% else %} search-modal__content-bottom{% endif %}" tabindex="-1">
+                {%- if settings.predictive_search_enabled -%}
+                  <predictive-search class="search-modal__form" data-loading-text="{{ 'accessibility.loading' | t }}">
+                {%- endif -%}
+                  <form action="{{ routes.search_url }}" method="get" role="search" class="search search-modal__form">
+                    <div class="field">
+                      <input class="search__input field__input"
+                        id="Search-In-Modal"
+                        type="search"
+                        name="q"
+                        value=""
+                        placeholder="{{ 'general.search.search' | t }}"
+                        {%- if settings.predictive_search_enabled -%}
+                          role="combobox"
+                          aria-expanded="false"
+                          aria-owns="predictive-search-results-list"
+                          aria-controls="predictive-search-results-list"
+                          aria-haspopup="listbox"
+                          aria-autocomplete="list"
+                          autocorrect="off"
+                          autocomplete="off"
+                          autocapitalize="off"
+                          spellcheck="false"
+                        {%- endif -%}
+                      >
+                      <label class="field__label" for="Search-In-Modal">{{ 'general.search.search' | t }}</label>
+                      <input type="hidden" name="options[prefix]" value="last">
+                      <button class="search__button field__button" aria-label="{{ 'general.search.search' | t }}">
+                        <svg class="icon icon-search" aria-hidden="true" focusable="false" role="presentation">
+                          <use href="#icon-search">
+                        </svg>
+                      </button>
+                    </div>
 
                   {%- if settings.predictive_search_enabled -%}
                     <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
@@ -589,8 +875,8 @@
           </div>
         </details>
       </details-modal>
-
-      {%- if shop.customer_accounts_enabled -%}
+ {%- endcomment -%}
+      {%- comment -%} {%- if shop.customer_accounts_enabled -%}
         <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="header__icon header__icon--account link focus-inset{% if section.settings.menu != blank %} small-hide{% endif %}">
           {% render 'icon-account' %}
           <span class="visually-hidden">
@@ -603,9 +889,9 @@
             -%}
           </span>
         </a>
-      {%- endif -%}
+      {%- endif -%} {%- endcomment -%}
 
-      <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
+      {%- comment -%} <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
         {%- liquid
           if cart == empty
             render 'icon-cart-empty'
@@ -622,9 +908,10 @@
             <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
           </div>
         {%- endif -%}
-      </a>
+      </a> {%- endcomment -%}
     </div>
   </header>
+  
 </{% if section.settings.enable_sticky_header %}sticky-header{% else %}div{% endif %}>
 
 {%- if settings.cart_type == "notification" -%}
