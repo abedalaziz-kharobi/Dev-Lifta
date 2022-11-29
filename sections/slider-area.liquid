@@ -75,3 +75,55 @@
   </div>
 </div>
 <!-- End Slider Area -->
+
+
+{% schema %}
+  {
+    "name": "footer app download",
+    "tag": "section",
+    "class": "appdownload",
+    "blocks": [
+      {
+        "type": "@app"
+      }, {
+        "type": "appdownload",
+        "name": "app download",
+        "settings": [
+          {
+            "type": "text",
+            "id": "app_title",
+            "label": "app download"
+          },
+          {
+            "type": "textarea",
+            "id": "app_desc",
+            "label": "app app_desc"
+          },
+          {
+            "type": "image_picker",
+            "id": "qrimage",
+            "label": "qr code image"
+          },
+          {
+            "type": "image_picker",
+            "id": "playimage",
+            "label": "paly code image"
+          }, {
+            "type": "image_picker",
+            "id": "astoreimage",
+            "label": "appsore code image"
+          }, {
+            "type": "url",
+            "id": "appsurl",
+            "label": "appsurl code image"
+          }, {
+            "type": "url",
+            "id": "appspaly",
+            "label": "appspaly code image"
+          }
+        ]
+      }
+    ],
+    "settings": []
+  }
+{% endschema %}
